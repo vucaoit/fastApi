@@ -16,8 +16,6 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-if __name__ == "__main__":
-    uvicorn.run(app, host="10.250.194.207", port=8080, reload=True)
     
 # Dependency
 def get_db():
@@ -99,3 +97,7 @@ def login(request_data: LoginRequest):
 @app.get('/books', dependencies=[Depends(validate_token)])
 def list_books():
     return {'data': ['Sherlock Homes', 'Harry Potter', 'Rich Dad Poor Dad']}
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="10.250.194.207", port=8080, reload=True)
