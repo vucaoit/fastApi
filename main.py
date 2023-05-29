@@ -1,4 +1,8 @@
-from fastapi import Depends, FastAPI, HTTPException
+import os
+import shutil
+import uuid
+from fastapi import Depends, FastAPI, HTTPException, File, UploadFile, Request
+from fastapi.staticfiles import StaticFiles
 import jwt
 from datetime import datetime, timedelta
 from typing import Union, Any
@@ -17,7 +21,8 @@ from typing import List
 
 app = FastAPI()
 
-    
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+
 # Dependency
 def get_db():
     db = SessionLocal()
@@ -99,6 +104,17 @@ def login(request_data: LoginRequest):
 def list_books():
     return {'data': ['Sherlock Homes', 'Harry Potter', 'Rich Dad Poor Dad']}
 
+@app.post("/images/")
+async def create_upload_file(file: UploadFile = File(...)):
+
+    file.filename = f"{uuid.uuid4()}.jpg"
+    contents = await file.read()  # <-- Important!
+
+    # example of how you can save the file
+    with open(f"uploads/{file.filename}", "wb") as f:
+        f.write(contents)
+
+    return {"filename": "/uploads/"+file.filename}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="10.250.194.207", port=8080, reload=True)
