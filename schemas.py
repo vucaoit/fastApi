@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import List
 
 
 class ItemBase(BaseModel):
@@ -29,7 +30,7 @@ class UserCreate(UserBase):
 class User(UserBase):
     id: int
     is_active: bool
-    items: list[Item]
+    items: List[Item]
 
     class Config:
         orm_mode = True
