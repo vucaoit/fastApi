@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 class ItemBase(BaseModel):
     title: str
-    description: str | None
+    description: str
 
 
 class ItemCreate(ItemBase):
