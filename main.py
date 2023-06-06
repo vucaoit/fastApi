@@ -90,8 +90,6 @@ class ConnectionManager:
         for key, value in self.active_connections.items():
             if str(key) == str(target_id):
                 await value.send_text(message)
-            else:
-                print(f'{key} == {target_id} = {key is target_id}')
         
 manager = ConnectionManager()
 
