@@ -2,35 +2,33 @@ from pydantic import BaseModel
 from typing import List
 
 
-class ItemBase(BaseModel):
-    title: str
-    description: str
-
-
-class ItemCreate(ItemBase):
-    pass
-
-
-class Item(ItemBase):
-    id: int
-    owner_id: int
-
-    class Config:
-        orm_mode = True
-
-
 class UserBase(BaseModel):
     email: str
+    pass
 
 
 class UserCreate(UserBase):
     password: str
+    fullName: str
 
 
 class User(UserBase):
     id: int
     is_active: bool
-    items: List[Item]
-
     class Config:
         orm_mode = True
+
+class ProfileBase(BaseModel):
+    email: str
+    pass
+
+class ProfileCreate(ProfileBase):
+    {}
+
+
+class Profile(ProfileBase):
+    fullName:str
+    avatar:str
+    class Config:
+        orm_mode = True
+
