@@ -20,6 +20,7 @@ class User(UserBase):
 
 class ProfileBase(BaseModel):
     email: str
+    user_id:int
     pass
 
 class ProfileCreate(ProfileBase):

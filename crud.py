@@ -24,7 +24,11 @@ def get_user_by_email(db: Session, email: str):
     user.profile = profile
     user.password = ""
     return user
-
+def get_profile_by_email(db: Session, email: str):
+    user = db.query(models.User).with_entities(models.User.id).filter(models.User.email == email).first()
+    profile = db.query(models.Profile).filter(models.Profile.email == email).first()
+    profile.user_id = user.id
+    return profile
 
 def get_users(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.User).offset(skip).limit(limit).all()
@@ -35,7 +39,8 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
-    db_profile = models.Profile(email=user.email, fullName=user.fullName,avatar = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Golden_retriever_eating_pigs_foot.jpg/170px-Golden_retriever_eating_pigs_foot.jpg")
+    user1 = get_user(db,user.email)
+    db_profile = models.Profile(email=user.email,user_id= user1.id, fullName=user.fullName,avatar = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Golden_retriever_eating_pigs_foot.jpg/170px-Golden_retriever_eating_pigs_foot.jpg")
     db.add(db_profile)
     db.commit()
     db.refresh(db_profile)
